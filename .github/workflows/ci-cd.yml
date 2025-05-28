@@ -50,10 +50,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y docker-compose
-          
+      
+      - name: List Docker Containers
+        run: docker ps -a
+
       - name: Run backend
         run: |
-          docker-compose up -d backend db
+          docker-compose start backend db
           sleep 20 # Wait for backend and db to be ready
 
       - name: Build and test frontend
