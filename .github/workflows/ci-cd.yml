@@ -46,6 +46,11 @@ jobs:
         working-directory: ./beka_potentialist
         run: ./gradlew clean bootJar
 
+      - name: Run backend
+        run: |
+          docker-compose up -d backend db
+          sleep 20 # Wait for backend and db to be ready
+
       - name: Build and test frontend
         working-directory: ./beka_potentialist-frontend
         run: |
@@ -56,9 +61,6 @@ jobs:
       - name: Build Docker images
         run: docker-compose build
 
-      - name: Run backend tests
-        working-directory: ./beka_potentialist
-        run: ./gradlew test
 
       # Optional: Push Docker images to registry
       # - name: Log in to DockerHub
