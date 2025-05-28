@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+
+    environment {
+        // Set these if you use a Docker registry
+        // DOCKER_REGISTRY = "your-registry-url"
+        // IMAGE_TAG = "${env.BUILD_NUMBER}"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Build Backend') {
+            steps {
+                sh './gradlew clean bootJar'
+            }
+        }
+        stage('Build Docker Images') {
+            steps {
+                sh 'docker-compose build'
+            }
+        }
+        // Optional: Push images to registry
+        // stage('Push Images') {
+        //     steps {
+        //         sh 'docker tag beka_potentialist-backend $DOCKER_REGISTRY/beka_potentialist-backend:$IMAGE_TAG'
+        //         sh 'docker push $DOCKER_REGISTRY/beka_potentialist-backend:$IMAGE_TAG'
+        //         // Repeat for frontend if needed
+        //     }
+        // }
+        stage('Deploy') {
+            steps {
+                sh 'docker-compose down'
+                sh 'docker-compose up -d'
+            }
+        }
+    }
+    post {
+        always {
+            sh 'docker-compose ps'
+        }
+    }
+}

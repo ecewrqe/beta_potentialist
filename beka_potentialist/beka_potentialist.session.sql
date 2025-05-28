@@ -1,0 +1,7 @@
+CREATE ROLE myuser WITH LOGIN PASSWORD 'mypassword';
+ALTER ROLE myuser CREATEDB;
+GRANT ALL PRIVILEGES ON DATABASE beka_potentialist TO myuser;
+GRANT ALL ON SCHEMA public TO myuser;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO myuser;
+
+select * from users;
