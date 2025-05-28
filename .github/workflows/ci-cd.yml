@@ -49,13 +49,17 @@ jobs:
       - name: Install docker-compose
         run: |
           sudo apt-get update
-          sudo apt-get install -y docker-compose
+          sudo apt-get install -y docker-compose curl
 
       - name: Run backend
         working-directory: ./beka_potentialist
         run: |
           java -jar build/libs/beka_potentialist-1.0.0.jar &
           sleep 20 # Wait for backend and db to be ready
+
+      - name: curl backend health endpoint
+        run: |
+          curl --retry 5 --retry-delay 5 --retry-connrefused http://localhost:8080/api/users
 
       - name: Build and test frontend
         working-directory: ./beka_potentialist-frontend
