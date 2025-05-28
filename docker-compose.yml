@@ -20,7 +20,7 @@ services:
   backend:
     build:
       context: ./beka_potentialist
-      dockerfile: docker/backend/Dockerfile
+      dockerfile: ../docker/backend/Dockerfile
     container_name: beka_potentialist
     depends_on:
       db:
